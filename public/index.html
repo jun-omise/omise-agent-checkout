@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Omise Agent Checkout</title>
+    <link rel="stylesheet" href="/design-system.css">
+    <link rel="stylesheet" href="/components.css">
     <link rel="stylesheet" href="/styles.css">
     <script src="https://cdn.omise.co/omise.js"></script>
 </head>
@@ -73,6 +75,69 @@
         </div>
     </div>
 
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-switcher-button" id="themeSwitcherBtn" aria-label="Switch theme">
+            🎨
+        </button>
+        <div class="theme-switcher-menu" id="themeSwitcherMenu">
+            <div class="theme-option" data-theme="default" onclick="switchTheme('default')">
+                <div class="theme-option-color"></div>
+                <span>Default</span>
+            </div>
+            <div class="theme-option" data-theme="dark" onclick="switchTheme('dark')">
+                <div class="theme-option-color"></div>
+                <span>Dark</span>
+            </div>
+            <div class="theme-option" data-theme="omise" onclick="switchTheme('omise')">
+                <div class="theme-option-color"></div>
+                <span>Omise</span>
+            </div>
+            <div class="theme-option" data-theme="purple" onclick="switchTheme('purple')">
+                <div class="theme-option-color"></div>
+                <span>Purple</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/design-system.js"></script>
     <script src="/app.js"></script>
+    <script>
+        // Initialize design system
+        const designSystem = new DesignSystem();
+
+        // Theme switcher logic
+        const themeSwitcherBtn = document.getElementById('themeSwitcherBtn');
+        const themeSwitcherMenu = document.getElementById('themeSwitcherMenu');
+
+        themeSwitcherBtn.addEventListener('click', () => {
+            themeSwitcherMenu.classList.toggle('show');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.theme-switcher')) {
+                themeSwitcherMenu.classList.remove('show');
+            }
+        });
+
+        function switchTheme(theme) {
+            designSystem.setTheme(theme);
+            themeSwitcherMenu.classList.remove('show');
+
+            // Update active state
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            document.querySelector(`.theme-option[data-theme="${theme}"]`).classList.add('active');
+
+            // Show notification
+            DesignSystem.showNotification(`Theme changed to ${theme}`, 'success', 2000);
+        }
+
+        // Set active theme on load
+        const currentTheme = designSystem.getTheme();
+        document.querySelector(`.theme-option[data-theme="${currentTheme}"]`)?.classList.add('active');
+    </script>
 </body>
 </html>

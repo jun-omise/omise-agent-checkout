@@ -2,10 +2,24 @@
 
 A sophisticated AI-powered checkout solution that combines Omise payment gateway with Claude AI using the Model Context Protocol (MCP). This solution provides an intelligent, conversational checkout experience for e-commerce applications.
 
+## ⚡ Quick Start
+
+```bash
+npm install
+cp .env.example .env
+# Add your API keys to .env
+npm run build
+npm run dev
+# Visit http://localhost:3000
+```
+
+📖 **New to this project?** Start with the [Quick Start Guide](QUICKSTART.md) or [Complete Tutorial](TUTORIAL.md)
+
 ## Features
 
 - **AI-Powered Checkout Agent**: Conversational checkout interface powered by Claude AI
 - **Model Context Protocol (MCP)**: Standardized integration with Omise payment gateway
+- **Adaptable Design System**: Complete design system with themes, components, and utilities
 - **Multiple Payment Methods**:
   - Credit/Debit Cards
   - PromptPay (QR Code)
@@ -15,6 +29,7 @@ A sophisticated AI-powered checkout solution that combines Omise payment gateway
 - **Real-time Chat Interface**: Natural language interaction for checkout
 - **RESTful API**: Complete API for checkout sessions and payment processing
 - **TypeScript**: Full type safety and modern development experience
+- **4 Built-in Themes**: Default, Dark, Omise Brand, and Purple Gradient
 
 ## Architecture
 
@@ -69,6 +84,14 @@ A sophisticated AI-powered checkout solution that combines Omise payment gateway
 │                   └─────────────────┘                    │
 └─────────────────────────────────────────────────────────┘
 ```
+
+## 📚 Documentation
+
+- **[Quick Start Guide](QUICKSTART.md)** - Get running in 5 minutes
+- **[Complete Tutorial](TUTORIAL.md)** - Step-by-step guide for everything
+- **[Design System](DESIGN_SYSTEM.md)** - Complete design system documentation
+- **[Code Examples](EXAMPLES.md)** - Practical code examples
+- **[MCP Integration](MCP_INTEGRATION.md)** - Model Context Protocol guide
 
 ## Installation
 
@@ -125,7 +148,9 @@ Start the development server with hot reload:
 npm run dev
 ```
 
-The application will be available at `http://localhost:3000`
+The application will be available at:
+- **Main App**: `http://localhost:3000`
+- **Design Showcase**: `http://localhost:3000/design-showcase.html`
 
 ### Production Mode
 
@@ -143,6 +168,43 @@ npm run dev:mcp
 ```
 
 This starts the MCP server on stdio, which can be used by MCP clients to interact with Omise payment gateway.
+
+## Design System
+
+The checkout solution includes a comprehensive design system with:
+
+### Themes
+
+Switch themes in the browser:
+```javascript
+const ds = new DesignSystem();
+ds.setTheme('dark');     // Dark theme
+ds.setTheme('omise');    // Omise brand colors
+ds.setTheme('purple');   // Purple gradient
+ds.setTheme('default');  // Default theme
+```
+
+Or use the theme switcher UI (paint brush icon in bottom-right corner).
+
+### Components
+
+Pre-built components for rapid development:
+- Buttons (Primary, Secondary, Outline, Ghost)
+- Cards with headers and footers
+- Form inputs with validation states
+- Badges and alerts
+- Loading states (spinners, progress bars, skeletons)
+- Modals and notifications
+- Grid and layout utilities
+
+See the [Design System Documentation](DESIGN_SYSTEM.md) for complete details.
+
+### Design Showcase
+
+View all components in action:
+```
+http://localhost:3000/design-showcase.html
+```
 
 ## API Documentation
 
