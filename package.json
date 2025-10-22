@@ -1,0 +1,39 @@
+{
+  "name": "omise-agent-checkout",
+  "version": "1.0.0",
+  "description": "Sophisticated AI-powered checkout solution using Omise payments with Model Context Protocol",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "dev:mcp": "tsx src/mcp/server.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "mcp": "node dist/mcp/server.js",
+    "test": "echo \"Tests coming soon\" && exit 0"
+  },
+  "keywords": [
+    "omise",
+    "payment",
+    "checkout",
+    "ai-agent",
+    "mcp",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "express": "^4.21.2",
+    "omise": "^0.11.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
