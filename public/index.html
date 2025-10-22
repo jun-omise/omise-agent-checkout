@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omise Agent Checkout</title>
+    <link rel="stylesheet" href="/design-system.css">
+    <link rel="stylesheet" href="/components.css">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.omise.co/omise.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Omise Agent Checkout</h1>
+            <p class="subtitle">AI-Powered Payment Experience</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Shopping Cart Section -->
+            <div class="cart-section" id="cartSection">
+                <h2>Shopping Cart</h2>
+                <div id="cartItems"></div>
+                <div class="cart-total">
+                    <strong>Total:</strong>
+                    <span id="cartTotal">0.00 THB</span>
+                </div>
+                <button id="startCheckoutBtn" class="btn btn-primary">Start Checkout</button>
+            </div>
+
+            <!-- Checkout Agent Section -->
+            <div class="checkout-section" id="checkoutSection" style="display: none;">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h2>Checkout Assistant</h2>
+                        <p class="session-info">Session: <span id="sessionId"></span></p>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message assistant">
+                            <div class="message-content">
+                                <p>Hello! I'm your checkout assistant. I'll help you complete your purchase securely and easily.</p>
+                                <p>I can accept various payment methods including:</p>
+                                <ul>
+                                    <li>Credit/Debit Cards</li>
+                                    <li>PromptPay (QR Code)</li>
+                                    <li>Internet Banking</li>
+                                    <li>Mobile Banking</li>
+                                </ul>
+                                <p>How would you like to proceed with the payment?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Type your message here..."
+                            class="chat-input"
+                        >
+                        <button id="sendMessageBtn" class="btn btn-send">Send</button>
+                    </div>
+                </div>
+
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="orderSummary"></div>
+                    <div class="summary-total">
+                        <strong>Total:</strong>
+                        <span id="summaryTotal">0.00 THB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-switcher-button" id="themeSwitcherBtn" aria-label="Switch theme">
+            🎨
+        </button>
+        <div class="theme-switcher-menu" id="themeSwitcherMenu">
+            <div class="theme-option" data-theme="default" onclick="switchTheme('default')">
+                <div class="theme-option-color"></div>
+                <span>Default</span>
+            </div>
+            <div class="theme-option" data-theme="dark" onclick="switchTheme('dark')">
+                <div class="theme-option-color"></div>
+                <span>Dark</span>
+            </div>
+            <div class="theme-option" data-theme="omise" onclick="switchTheme('omise')">
+                <div class="theme-option-color"></div>
+                <span>Omise</span>
+            </div>
+            <div class="theme-option" data-theme="purple" onclick="switchTheme('purple')">
+                <div class="theme-option-color"></div>
+                <span>Purple</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/design-system.js"></script>
+    <script src="/app.js"></script>
+    <script>
+        // Initialize design system
+        const designSystem = new DesignSystem();
+
+        // Theme switcher logic
+        const themeSwitcherBtn = document.getElementById('themeSwitcherBtn');
+        const themeSwitcherMenu = document.getElementById('themeSwitcherMenu');
+
+        themeSwitcherBtn.addEventListener('click', () => {
+            themeSwitcherMenu.classList.toggle('show');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.theme-switcher')) {
+                themeSwitcherMenu.classList.remove('show');
+            }
+        });
+
+        function switchTheme(theme) {
+            designSystem.setTheme(theme);
+            themeSwitcherMenu.classList.remove('show');
+
+            // Update active state
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+            document.querySelector(`.theme-option[data-theme="${theme}"]`).classList.add('active');
+
+            // Show notification
+            DesignSystem.showNotification(`Theme changed to ${theme}`, 'success', 2000);
+        }
+
+        // Set active theme on load
+        const currentTheme = designSystem.getTheme();
+        document.querySelector(`.theme-option[data-theme="${currentTheme}"]`)?.classList.add('active');
+    </script>
+</body>
+</html>
