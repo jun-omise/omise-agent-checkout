@@ -10,6 +10,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "mcp": "node dist/mcp/server.js",
+    "db:init": "tsx src/scripts/init-database.ts",
+    "db:init:prod": "node dist/scripts/init-database.js",
     "test": "echo \"Tests coming soon\" && exit 0"
   },
   "keywords": [
@@ -29,6 +31,10 @@
     "omise": "^0.11.0",
     "dotenv": "^16.4.7",
     "zod": "^3.24.1"
+  },
+  "optionalDependencies": {
+    "mongodb": "^6.3.0",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
