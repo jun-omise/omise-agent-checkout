@@ -4,6 +4,8 @@
  */
 
 import { Address } from './ecommerce-platform.interface.js';
+import { UserProfileModel } from '../models/user-profile.model.js';
+import { getDatabase } from './database.service.js';
 
 export interface PaymentMethod {
   id: string;
@@ -71,15 +73,36 @@ export interface AddPaymentMethodParams extends Omit<PaymentMethod, 'id' | 'crea
 }
 
 export class UserProfileService {
-  // In-memory storage (replace with database in production)
+  // In-memory storage (fallback if database not available)
   private profiles: Map<string, UserProfile> = new Map();
   private emailIndex: Map<string, string> = new Map(); // email -> userId
+  private model: UserProfileModel | null = null;
+  private useDatabase: boolean = false;
+
+  constructor() {
+    try {
+      const db = getDatabase();
+      if (db.isConnected()) {
+        this.model = new UserProfileModel();
+        this.useDatabase = true;
+        console.log('✓ User Profile Service using database storage');
+      } else {
+        console.log('⚠ User Profile Service using in-memory storage');
+      }
+    } catch (error) {
+      console.log('⚠ User Profile Service using in-memory storage');
+    }
+  }
 
   /**
    * Create a new user profile
    */
   async createProfile(params: CreateProfileParams): Promise<UserProfile> {
-    // Check if email already exists
+    if (this.useDatabase && this.model) {
+      return await this.model.create(params);
+    }
+
+    // In-memory fallback
     if (this.emailIndex.has(params.email)) {
       throw new Error(`Profile with email ${params.email} already exists`);
     }
@@ -112,6 +135,9 @@ export class UserProfileService {
    * Get user profile by ID
    */
   async getProfile(userId: string): Promise<UserProfile | null> {
+    if (this.useDatabase && this.model) {
+      return await this.model.findById(userId);
+    }
     return this.profiles.get(userId) || null;
   }
 
@@ -119,6 +145,10 @@ export class UserProfileService {
    * Get user profile by email
    */
   async getProfileByEmail(email: string): Promise<UserProfile | null> {
+    if (this.useDatabase && this.model) {
+      return await this.model.findByEmail(email);
+    }
+
     const userId = this.emailIndex.get(email);
     if (!userId) return null;
 

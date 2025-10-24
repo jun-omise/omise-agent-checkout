@@ -4,6 +4,7 @@ import { OmiseService } from './services/omise.service.js';
 import { CheckoutAgentService, CartItem } from './services/checkout-agent.service.js';
 import { EcommercePlatformManager } from './services/ecommerce-manager.service.js';
 import { UserProfileService } from './services/user-profile.service.js';
+import { initializeDatabase, DatabaseConfig } from './services/database.service.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -12,6 +13,26 @@ const __dirname = path.dirname(__filename);
 
 // Load environment variables
 config();
+
+// Initialize database (if configured)
+const dbType = (process.env.DB_TYPE || 'memory') as 'mongodb' | 'postgresql' | 'memory';
+if (dbType !== 'memory') {
+  const dbConfig: DatabaseConfig = {
+    type: dbType,
+    uri: process.env.DATABASE_URI,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : undefined,
+    database: process.env.DB_NAME || 'omise_checkout',
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
+  };
+
+  const db = initializeDatabase(dbConfig);
+  db.connect().catch((err) => {
+    console.error('Database connection failed:', err.message);
+    console.log('Falling back to in-memory storage');
+  });
+}
 
 const app = express();
 const port = process.env.PORT || 3000;
